@@ -19,36 +19,41 @@
  * ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
  * DEALINGS IN THE SOFTWARE.
 */
-package com.github.vincenthung.fixedformatter4j.formatter.impl;
+package com.github.vincenthung.fixedformatter4j.annotation;
 
-import org.apache.commons.lang.StringUtils;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 
-import com.ancientprogramming.fixedformat4j.exception.FixedFormatException;
-import com.ancientprogramming.fixedformat4j.format.FixedFormatManager;
+import com.ancientprogramming.fixedformat4j.annotation.Align;
 import com.ancientprogramming.fixedformat4j.format.FixedFormatter;
-import com.ancientprogramming.fixedformat4j.format.FormatContext;
-import com.ancientprogramming.fixedformat4j.format.FormatInstructions;
-import com.ancientprogramming.fixedformat4j.format.impl.FixedFormatManagerImpl;
+import com.ancientprogramming.fixedformat4j.format.impl.ByTypeFormatter;
 
-public class GenericObjectFormatter<T> implements FixedFormatter<T> {
+@Retention(RetentionPolicy.RUNTIME)
+@Target({ElementType.METHOD})
+public @interface FixedFormatList {
 
-	private static FixedFormatManager manager = new FixedFormatManagerImpl();
-	private FormatContext<T> context;
+	/**
+	 * The length of the each formatted field in list
+	 * @return the length as an int
+	 */
+	int eachLength();
 
-	public GenericObjectFormatter(FormatContext<T> context) {
-		this.context = context;
-	}
+	/**
+	 * @return The direction of the padding of each in list. Defaults to {@link Align#LEFT}.
+	 */
+	Align align() default Align.LEFT;
 
-	public T parse(String value, FormatInstructions instructions) throws FixedFormatException {
-		if (StringUtils.isBlank(value))
-			return null;
-		return manager.load(context.getDataType(), value);
-	}
+	/**
+	 * The character to pad with if the length is longer than the formatted data
+	 * @return the padding character
+	 */
+	char paddingChar() default ' ';
 
-	public String format(T value, FormatInstructions instructions) throws FixedFormatException {
-		if (value == null)
-			return null;
-		return manager.export(value);
-	}
+	Class<?> elementClass();
+
+	@SuppressWarnings("rawtypes")
+	Class<? extends FixedFormatter> elementFormatter() default ByTypeFormatter.class;
 
 }
