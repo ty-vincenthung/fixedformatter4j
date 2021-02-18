@@ -14,12 +14,6 @@ import com.github.vincenthung.fixedformatter4j.util.FixedFormatterUtil;
 
 public class GenericListFormatter<T> implements FixedFormatter<List<T>> {
 
-	private FormatContext<List<T>> context;
-
-	public GenericListFormatter(FormatContext<List<T>> context) {
-		this.context = context;
-	}
-
 	@SuppressWarnings("unchecked")
 	public List<T> parse(String value, FormatInstructions instructions) throws FixedFormatException {
 
@@ -40,13 +34,16 @@ public class GenericListFormatter<T> implements FixedFormatter<List<T>> {
 		List<T> result = new ArrayList<T>();
 		FixedFormatter<?> formatter = getElementFormatter(new FormatContext<T>(0, (Class<T>) formatList.elementClass(), formatList.elementFormatter()));
 		for (int offset = 0; offset < instrn.getLength(); offset += formatList.eachLength()) {
-			Object parsedData = formatter.parse(value.substring(offset, offset + formatList.eachLength()),
+			String elementString = value.substring(offset, offset + formatList.eachLength());
+			if (StringUtils.isEmpty(instructions.getAlignment().remove(elementString, instructions.getPaddingChar())))
+				continue;
+			Object parsedData = formatter.parse(elementString,
 					new FormatInstructions(formatList.eachLength(), formatList.align(), formatList.paddingChar(),
 							instrn.getFixedFormatPatternData(), instrn.getFixedFormatBooleanData(),
 							instrn.getFixedFormatNumberData(), instrn.getFixedFormatDecimalData()));
 			if (parsedData != null) result.add((T) parsedData);
 		}
-		return result;
+		return result.isEmpty() ? null : result;
 	}
 
 	@SuppressWarnings({ "unchecked", "rawtypes" })
