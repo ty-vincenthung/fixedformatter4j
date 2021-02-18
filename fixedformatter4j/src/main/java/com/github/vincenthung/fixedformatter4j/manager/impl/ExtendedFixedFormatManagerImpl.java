@@ -30,9 +30,9 @@ import java.util.TreeMap;
 
 import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.tuple.Pair;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.javatuples.Pair;
 
 import com.ancientprogramming.fixedformat4j.annotation.Field;
 import com.ancientprogramming.fixedformat4j.annotation.Fields;
@@ -72,19 +72,19 @@ public class ExtendedFixedFormatManagerImpl implements FixedFormatManager {
 
 			if (fieldAnnotation != null) {
 				Method setter = getSetter(fixedFormatRecordClass, method);
-				setterValuePair.add(Pair.with(setter, readDataAccordingFieldAnnotation(fixedFormatRecordClass, data, method, fieldAnnotation)));
+				setterValuePair.add(Pair.of(setter, readDataAccordingFieldAnnotation(fixedFormatRecordClass, data, method, fieldAnnotation)));
 			} else if (fieldsAnnotation != null) {
 				Method setter = getSetter(fixedFormatRecordClass, method);
 				if (ArrayUtils.isEmpty(fieldsAnnotation.value()))
 					throw new FixedFormatException(String.format("%s annotation must contain minimum one %s annotation",
 							Fields.class.getName(), Field.class.getName()));
-				setterValuePair.add(Pair.with(setter, readDataAccordingFieldAnnotation(fixedFormatRecordClass, data, method, fieldsAnnotation.value()[0])));
+				setterValuePair.add(Pair.of(setter, readDataAccordingFieldAnnotation(fixedFormatRecordClass, data, method, fieldsAnnotation.value()[0])));
 			}
 		}
 
 		for (Pair<Method, Object> pair : setterValuePair) {
-			Method setter = pair.getValue0();
-			Object value = pair.getValue1();
+			Method setter = pair.getLeft();
+			Object value = pair.getRight();
 			try {
 				setter.invoke(instance, value);
 			} catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {

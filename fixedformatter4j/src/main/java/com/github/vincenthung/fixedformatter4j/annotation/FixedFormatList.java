@@ -28,7 +28,7 @@ import java.lang.annotation.Target;
 
 import com.ancientprogramming.fixedformat4j.annotation.Align;
 import com.ancientprogramming.fixedformat4j.format.FixedFormatter;
-import com.ancientprogramming.fixedformat4j.format.impl.ByTypeFormatter;
+import com.github.vincenthung.fixedformatter4j.formatter.impl.GenericTypeFormatter;
 
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ElementType.METHOD})
@@ -54,6 +54,6 @@ public @interface FixedFormatList {
 	Class<?> elementClass();
 
 	@SuppressWarnings("rawtypes")
-	Class<? extends FixedFormatter> elementFormatter() default ByTypeFormatter.class;
+	Class<? extends FixedFormatter> elementFormatter() default GenericTypeFormatter.class;
 
 }

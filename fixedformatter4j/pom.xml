@@ -24,14 +24,15 @@
 			<scope>test</scope>
 		</dependency>
 		<dependency>
-		    <groupId>org.javatuples</groupId>
-		    <artifactId>javatuples</artifactId>
-		    <version>1.2</version>
-		</dependency>
-		<dependency>
 			<groupId>com.ancientprogramming.fixedformat4j</groupId>
 			<artifactId>fixedformat4j</artifactId>
 			<version>1.2.2</version>
 		</dependency>
+        <!-- Apache Commons -->
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-lang3</artifactId>
+            <version>3.6</version>
+        </dependency>
 	</dependencies>
 </project>

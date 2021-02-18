@@ -5,7 +5,6 @@ import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
 
-import com.ancientprogramming.fixedformat4j.annotation.Align;
 import com.ancientprogramming.fixedformat4j.exception.FixedFormatException;
 import com.ancientprogramming.fixedformat4j.format.FixedFormatter;
 import com.ancientprogramming.fixedformat4j.format.FormatContext;
@@ -78,8 +77,7 @@ public class GenericListFormatter<T> implements FixedFormatter<List<T>> {
 							instrn.getFixedFormatNumberData(), instrn.getFixedFormatDecimalData()));
 			if (formattedStr != null) {
 				if (formattedStr.length() < formatList.eachLength())
-					sb.append(formatList.align() == Align.LEFT ? StringUtils.rightPad(formattedStr, formatList.eachLength(), formatList.paddingChar())
-							: StringUtils.leftPad(formattedStr, formatList.eachLength(), formatList.paddingChar()));
+					sb.append(formatList.align().apply(formattedStr, formatList.eachLength(), formatList.paddingChar()));
 				else
 					sb.append(formattedStr);
 			}
@@ -87,7 +85,7 @@ public class GenericListFormatter<T> implements FixedFormatter<List<T>> {
 
 		String result = sb.toString();
 		if (result.length() < instrn.getLength())
-			result = StringUtils.leftPad(result, instrn.getLength(), instrn.getPaddingChar());
+			result = StringUtils.rightPad(result, instrn.getLength(), instrn.getPaddingChar());
 
 		if (result.length() > instrn.getLength())
 			throw new FixedFormatException(String.format("List size %s with eachLength=%s exceed the total length=%s",
