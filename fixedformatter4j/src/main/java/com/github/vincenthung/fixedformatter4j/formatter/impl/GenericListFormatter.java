@@ -23,7 +23,7 @@ public class GenericListFormatter<T> implements FixedFormatter<List<T>> {
 		FixedFormatterInstruction instrn = (FixedFormatterInstruction) instructions;
 		FixedFormatList formatList = instrn.getFixedFormatList();
 		if (formatList == null)
-			throw new FixedFormatException(String.format("%s must be annotated to the getter Generic List parsing", FixedFormatList.class.getName()));
+			throw new FixedFormatException(String.format("%s must be annotated to the getter for Generic List parsing", FixedFormatList.class.getName()));
 
 		if (formatList.eachLength() <= 0)
 			throw new FixedFormatException("The eachLength must be greater than 0 for list parsing");
@@ -56,7 +56,7 @@ public class GenericListFormatter<T> implements FixedFormatter<List<T>> {
 		FixedFormatterInstruction instrn = (FixedFormatterInstruction) instructions;
 		FixedFormatList formatList = instrn.getFixedFormatList();
 		if (formatList == null)
-			throw new FixedFormatException(String.format("%s must be annotated to the getter Generic List formatting", FixedFormatList.class.getName()));
+			throw new FixedFormatException(String.format("%s must be annotated to the getter for Generic List formatting", FixedFormatList.class.getName()));
 
 		if (formatList.eachLength() <= 0)
 			throw new FixedFormatException("The eachLength must be greater than 0 for list formatting");
