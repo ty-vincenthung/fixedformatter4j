@@ -32,7 +32,8 @@ public class GenericListFormatter<T> implements FixedFormatter<List<T>> {
 			throw new FixedFormatException("The length is not a multiple of eachLength for list parsing");
 
 		List<T> result = new ArrayList<T>();
-		FixedFormatter<?> formatter = getElementFormatter(new FormatContext<T>(0, (Class<T>) formatList.elementClass(), formatList.elementFormatter()));
+		FixedFormatter<?> formatter = FixedFormatterUtil.getFixedFormatterInstance(
+				new FormatContext<T>(0, (Class<T>) formatList.elementClass(), formatList.elementFormatter()));
 		for (int offset = 0; offset < instrn.getLength(); offset += formatList.eachLength()) {
 			String elementString = value.substring(offset, offset + formatList.eachLength());
 			if (StringUtils.isEmpty(instructions.getAlignment().remove(elementString, instructions.getPaddingChar())))
@@ -64,19 +65,22 @@ public class GenericListFormatter<T> implements FixedFormatter<List<T>> {
 		if (instrn.getLength() % formatList.eachLength() != 0)
 			throw new FixedFormatException("The length is not a multiple of eachLength for list formatting");
 
-		FixedFormatter formatter = getElementFormatter(new FormatContext<T>(0, (Class<T>) formatList.elementClass(), formatList.elementFormatter()));
+		FixedFormatter formatter = FixedFormatterUtil.getFixedFormatterInstance(
+				new FormatContext<T>(0, (Class<T>) formatList.elementClass(), formatList.elementFormatter()));
 
 		StringBuilder sb = new StringBuilder();
-		for (T element : value) {
-			String formattedStr = formatter.format(element,
-					new FormatInstructions(formatList.eachLength(), formatList.align(), formatList.paddingChar(),
-							instrn.getFixedFormatPatternData(), instrn.getFixedFormatBooleanData(),
-							instrn.getFixedFormatNumberData(), instrn.getFixedFormatDecimalData()));
-			if (formattedStr != null) {
-				if (formattedStr.length() < formatList.eachLength())
-					sb.append(formatList.align().apply(formattedStr, formatList.eachLength(), formatList.paddingChar()));
-				else
-					sb.append(formattedStr);
+		if (value != null) {
+			for (T element : value) {
+				String formattedStr = formatter.format(element,
+						new FormatInstructions(formatList.eachLength(), formatList.align(), formatList.paddingChar(),
+								instrn.getFixedFormatPatternData(), instrn.getFixedFormatBooleanData(),
+								instrn.getFixedFormatNumberData(), instrn.getFixedFormatDecimalData()));
+				if (formattedStr != null) {
+					if (formattedStr.length() < formatList.eachLength())
+						sb.append(formatList.align().apply(formattedStr, formatList.eachLength(), formatList.paddingChar()));
+					else
+						sb.append(formattedStr);
+				}
 			}
 		}
 
@@ -88,10 +92,6 @@ public class GenericListFormatter<T> implements FixedFormatter<List<T>> {
 			throw new FixedFormatException(String.format("List size %s with eachLength=%s exceed the total length=%s",
 					value.size(), formatList.eachLength(), instrn.getLength()));
 		return result;
-	}
-
-	protected FixedFormatter<?> getElementFormatter(FormatContext<T> context) {
-		return FixedFormatterUtil.getFixedFormatterInstance(context);
 	}
 
 }
