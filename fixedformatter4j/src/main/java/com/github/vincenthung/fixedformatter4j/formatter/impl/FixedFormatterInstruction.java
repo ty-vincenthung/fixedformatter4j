@@ -10,12 +10,14 @@ import com.ancientprogramming.fixedformat4j.format.data.FixedFormatBooleanData;
 import com.ancientprogramming.fixedformat4j.format.data.FixedFormatDecimalData;
 import com.ancientprogramming.fixedformat4j.format.data.FixedFormatNumberData;
 import com.ancientprogramming.fixedformat4j.format.data.FixedFormatPatternData;
+import com.github.vincenthung.fixedformatter4j.annotation.FixedFormatEnum;
 import com.github.vincenthung.fixedformatter4j.annotation.FixedFormatList;
 import com.github.vincenthung.fixedformatter4j.util.FixedFormatterUtil;
 
 public class FixedFormatterInstruction extends FormatInstructions {
 
 	private FixedFormatList fixedFormatList;
+	private FixedFormatEnum fixedFormatEnum;
 
 	// Backward compatibility
 	public FixedFormatterInstruction(int length, Align alignment, char paddingChar,
@@ -28,7 +30,7 @@ public class FixedFormatterInstruction extends FormatInstructions {
 	public FixedFormatterInstruction(int length, Align alignment, char paddingChar,
 			FixedFormatPattern fixedFormatPattern, FixedFormatBoolean fixedFormatBoolean,
 			FixedFormatNumber fixedFormatNumber, FixedFormatDecimal fixedFormatDecimal,
-			FixedFormatList fixedFormatList) {
+			FixedFormatList fixedFormatList, FixedFormatEnum fixedFormatEnum) {
 
 		super(length, alignment, paddingChar,
 				FixedFormatterUtil.convert(fixedFormatPattern),
@@ -37,16 +39,21 @@ public class FixedFormatterInstruction extends FormatInstructions {
 				FixedFormatterUtil.convert(fixedFormatDecimal));
 
 		this.fixedFormatList = fixedFormatList;
+		this.fixedFormatEnum = fixedFormatEnum;
 	}
 
 	public FixedFormatList getFixedFormatList() {
 		return fixedFormatList;
 	}
 
+	public FixedFormatEnum getFixedFormatEnum() {
+		return fixedFormatEnum;
+	}
+
 	@Override
 	public String toString() {
-		return "FixedFormatterInstruction [fixedFormatList=" + fixedFormatList + ", FormatInstructions.toString()=" + super.toString()
-				+ "]";
+		return "FixedFormatterInstruction [fixedFormatList=" + fixedFormatList + ", fixedFormatEnum=" + fixedFormatEnum
+				+ ", FormatInstructions.toString()=" + super.toString() + "]";
 	}
 
 }

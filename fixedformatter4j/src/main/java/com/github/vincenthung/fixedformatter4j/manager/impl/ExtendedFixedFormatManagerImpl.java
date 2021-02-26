@@ -47,6 +47,7 @@ import com.ancientprogramming.fixedformat4j.format.FixedFormatUtil;
 import com.ancientprogramming.fixedformat4j.format.FixedFormatter;
 import com.ancientprogramming.fixedformat4j.format.FormatContext;
 import com.ancientprogramming.fixedformat4j.format.ParseException;
+import com.github.vincenthung.fixedformatter4j.annotation.FixedFormatEnum;
 import com.github.vincenthung.fixedformatter4j.annotation.FixedFormatList;
 import com.github.vincenthung.fixedformatter4j.formatter.impl.FixedFormatterInstruction;
 import com.github.vincenthung.fixedformatter4j.util.FixedFormatterUtil;
@@ -273,7 +274,8 @@ public class ExtendedFixedFormatManagerImpl implements FixedFormatManager {
 				method.getAnnotation(FixedFormatBoolean.class),
 				method.getAnnotation(FixedFormatNumber.class),
 				method.getAnnotation(FixedFormatDecimal.class),
-				method.getAnnotation(FixedFormatList.class));
+				method.getAnnotation(FixedFormatList.class),
+				method.getAnnotation(FixedFormatEnum.class));
 	}
 
 	protected boolean allowedAnnotatedMethod(Method method) {
